@@ -108,7 +108,7 @@
 \date{}
 
 \renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
-
+\usepackage{nicefrac} 
 %
 % Various Helper Commands
 %
@@ -179,4 +179,79 @@
     \end{enumerate} 
 \end{homeworkProblem}
 
+\pagebreak 
+
+\begin{homeworkProblem}
+    Representamos o problema de escalonamento como o produto de matrizes elementares. 
+
+    \begin{enumerate}[label=(\alph*)]
+        \item A multiplicação da coluna por um escalar $\alpha$ corresponde à multiplicação à direita por uma matriz $I + (\alpha - 1) E_{11}$, em que $E_{11}$ é uma matriz com $1$ na entrada $(1, 1)$ e $0$ nas restantes; $I$ é a matriz identidade. 
+        \item Multiplicação à esquerda por $I - \frac{2}{3} E_{11}$. 
+        \item Multiplicação à esquerda por $I + E_{13}$. 
+        \item Multiplicação à direita por $I - E_{11} + E_{14} - E_{44} + E_{41}$.
+        \item Multiplicação à esquerda por $I -  E_{12} - E_{32} - E_{42}$. 
+        \item Multiplicação à direita por $I - E_{44} + E_{34}$. 
+        \item Multiplicação à direita por $I[:, 2\!:]$, utilizando a notação da linguagem de programação \texttt{R}. 
+    \end{enumerate}
+
+    Assim, escrevemos a matriz resultante das operações definidas por 
+    \begin{equation*}
+        (I -  E_{12} - E_{32} - E_{42}) (I + E_{13}) \cdot (I - \nicefrac{2}{3} E_{11}) \cdot B \cdot (I + E_{11}) \cdot (I - E_{11} + E_{14} - E_{44} + E_{41}) \cdot (I - E_{44} + E_{34}) \cdot I[:, 2\!:]. 
+    \end{equation*}
+    Utilizando $3$ matrizes, ficamos com 
+ %    [[ 0.33333333 -1.          1.          0.        ]
+ % [ 0.          1.          0.          0.        ]
+ % [ 0.         -1.          1.          0.        ]
+ % [ 0.         -1.          0.          1.        ]] 
+ %  [[0. 0. 0.]
+ % [1. 0. 0.]
+ % [0. 1. 1.]
+ % [0. 0. 0.]]
+    \begin{equation*}
+        \begin{bmatrix}
+            \frac{1}{3} & -1 & 1 & 0 \\ 
+            0 & 1 & 0 & 0 \\ 
+            0 & -1 & 1 & 0 \\ 
+            0 & -1 & 0 & 1 
+        \end{bmatrix}
+        B 
+        \begin{bmatrix}
+            0 & 0 & 0 \\  
+            1 & 0 & 0 \\ 
+            0 & 1 & 1 \\  
+            0 & 0 & 0 \\
+        \end{bmatrix}. 
+    \end{equation*}
+    
+\end{homeworkProblem}
+
+\pagebreak 
+
+\begin{homeworkProblem}
+    Perceba que a terceira linha da matriz $A$ é igual à soma das duas restantes; portanto, a matriz não é invertível porque há elementos não nulos em seu núcleo, e.g., $(1, 1, -1)$. 
+\end{homeworkProblem}
+
+\pagebreak 
+
+\begin{homeworkProblem}
+    Calculamos $x_{1} = b_{1} / l_{11}$. Depois, $x_{2} = (b_{2} - l_{21} x_{1}) / l_{22}$, e assim por diante. No passo $i$, em particular, calculamos 
+    \begin{equation}
+        x_{i} = \frac{1}{l_{ii}} \left( b_{i} - \sum_{1 \le j \le i - 1} l_{ij} x_{j} \right). 
+    \end{equation}
+    Este algoritmo realiza $n$ operações de complexidade $\mathcal{O}(n)$ (cálculo do somatório da equação acima) e, portanto, tem complexidade $\mathcal{O}(n^{2})$.  
+\end{homeworkProblem}
+
+\pagebreak 
+
+\begin{homeworkProblem}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.5\textwidth]{figures/runtimes.pdf}
+        \caption{Tempo de execução da sub-rotina de resolução de sistemas lineares do software \texttt{NumPy} em \texttt{Python}.}
+        \label{fig:aa}
+    \end{figure}
+    Colocamos na Figura~\ref{fig:aa} os tempos de execução da sub-rotina \texttt{numpy.linalg.solve} para resolução de sistemas lineares em função do tamanho da matriz de variáveis. Os elementos das matrizes e dos vetores foram amostrados independemente de uma distribuição $\mathcal{N}(0, 1)$, e os tempos foram medidos 200 vezes; os intervalos de incerteza correspondem à distância de 1 desvio padrão da média. A operação utiliza a sub-rotina DGESV do pacote LAPACK, que tem complexidade $\mathcal{O}(N^{3})$ para matrizes $N \times N$.  
+\end{homeworkProblem}
+
 \end{document}
+
