@@ -14,14 +14,18 @@ print(
 )
 
 eig_values, eig_vectors = np.linalg.eig(m) 
-print(eig_values, eig_vectors, sep='\n') 
 inv_eig_vectors = np.linalg.inv(eig_vectors) 
 
-alpha = inv_eig_vectors[0, 0] 
+# This operation is allowed since all elements in the first line of Q^{-1} are the same
+alpha = inv_eig_vectors[0, 0]
 alpha_t_v = alpha * eig_vectors[:, 0] 
 
-print(alpha_t_v * 18) 
+stationary = lambda x: np.array([5/18, 1/3, 7/18]) * x.sum() 
 
-for i in range(999): 
-	x = m @ x 
-print(x) 
+for _ in range(12): 
+	x = np.random.randn(3) 	
+	print('analytic', stationary(x))
+		
+	for i in range(999): 
+		x = m @ x 
+	print('empirical', x) 
