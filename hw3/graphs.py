@@ -42,8 +42,11 @@ def conn_comp():
         b = np.where(np.isclose(b, 0.), 0., b).astype('float16') 
         b_uni, indices, inverse = np.unique(b, return_index=True, return_inverse=True) 
         ccs = inverse 
-        pd.DataFrame(ccs).to_csv(
-                'connected_components.csv', index=None 
+        pd.DataFrame({
+            'nodes': np.arange(len(ccs)), 
+            'ccs': ccs
+        }).to_csv(
+                'connected_components.csv', index=False
         ) 
     return amat 
         
